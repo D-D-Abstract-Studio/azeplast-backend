@@ -1,25 +1,24 @@
-import { Schema } from 'mongoose'
+import { Schema, Document } from 'mongoose'
 
 import { azePlastDB } from '@/shared/connection-db'
 import { setDefaultSettingsSchema } from '@/shared'
 
-import { IKanbanBoard } from '../types/kanban'
-import { KanbanColumn } from './KanbanColumn'
+import { IKanbanBoard } from '@/types/kanban'
 
-const collection = 'kanban_boards'
+type IKanbanBoardDocument = IKanbanBoard & Document
 
-const BoardSchema = new Schema<IKanbanBoard>(
+const BoardSchema = new Schema<IKanbanBoardDocument>(
   {
     name: { type: String, required: true },
-    columns: { type: Map, of: KanbanColumn },
+    columns: { type: Object, required: true },
     ordered: { type: [String], required: true }
   },
   {
     timestamps: true,
-    collection
+    collection: 'kanban_boards'
   }
 )
 
 setDefaultSettingsSchema(BoardSchema)
 
-export const KanbanBoard = azePlastDB.model<IKanbanBoard>(collection, BoardSchema)
+export const KanbanBoard = azePlastDB.model<IKanbanBoardDocument>('KanbanBoard', BoardSchema)

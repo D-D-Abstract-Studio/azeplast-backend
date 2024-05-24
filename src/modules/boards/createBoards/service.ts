@@ -6,6 +6,7 @@ import { BoardSchema } from './validation'
 import { IKanbanBoard } from '@/types/kanban'
 
 export const createBoardService = async (data: IKanbanBoard) => {
+  console.log(data)
   const boardData = BoardSchema.parse(data)
 
   const board = new KanbanBoard(boardData)
