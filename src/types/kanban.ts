@@ -1,8 +1,10 @@
+export const priority = ['baixa', 'média', 'alta'] as const
+
 export type IKanbanTask = {
   id: string
   name: string
   status: string
-  priority: string
+  priority: (typeof priority)[number]
   categories: string[]
   description: string
   assignee: Array<{

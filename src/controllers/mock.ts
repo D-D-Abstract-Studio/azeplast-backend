@@ -6,7 +6,7 @@ export const mock: IKanban = {
       id: 'task-1',
       name: 'Task 1',
       status: 'status-1',
-      priority: 'high',
+      priority: 'alta',
       categories: ['category-1'],
       description: 'This is a description',
       assignee: [],
