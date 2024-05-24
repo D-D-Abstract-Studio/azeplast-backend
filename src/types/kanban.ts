@@ -2,7 +2,7 @@ import { Document } from 'mongoose'
 
 export const priorityValues = ['baixa', 'média', 'alta'] as const
 
-export type IKanbanTask = Document & {
+export type IKanbanTask = Partial<Document> & {
   name: string
   priority: (typeof priorityValues)[number]
   categories: string[]
@@ -16,19 +16,17 @@ export type IKanbanTask = Document & {
   }
 }
 
-export type IKanbanColumn = Document & {
-  id: string
+export type IKanbanColumn = Partial<Document> & {
   name: string
   taskIds: string[]
 }
 
 export type IKanbanBoard = Pick<IKanban, 'columns' | 'ordered'> &
-  Document & {
-    id: string
+  Partial<Document> & {
     name: string
   }
 
-export type IKanban = Document & {
+export type IKanban = Partial<Document> & {
   tasks: Record<string, IKanbanTask>
   columns: Record<string, IKanbanColumn>
   ordered: string[]

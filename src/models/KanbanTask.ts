@@ -7,7 +7,7 @@ import { IKanbanTask, priorityValues } from '../types/kanban'
 
 const collection = 'kanban_tasks'
 
-export const KanbanTask = new Schema<IKanbanTask>(
+const KanbanTaskSchema = new Schema<IKanbanTask>(
   {
     name: { type: String, required: true },
     priority: { type: String, enum: priorityValues, required: true },
@@ -23,6 +23,6 @@ export const KanbanTask = new Schema<IKanbanTask>(
   }
 )
 
-setDefaultSettingsSchema(KanbanTask)
+setDefaultSettingsSchema(KanbanTaskSchema)
 
-export const KanbanTasks = azePlastDB.model<IKanbanTask>(collection, KanbanTask)
+export const KanbanTask = azePlastDB.model<IKanbanTask>(collection, KanbanTaskSchema)

@@ -1,11 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express'
 
-import { KanbanBoard } from '@/models/boards'
-import { KanbanColumn } from '@/models/columns'
-import { KanbanTask } from '@/models/tasks'
+import { KanbanBoard } from '@/models/KanbanBoard'
+import { KanbanColumn } from '@/models/KanbanColumn'
+import { KanbanTask } from '@/models/KanbanTask'
 
 import { ZodSchema, z } from 'zod'
 import { priorityValues } from '../types/kanban'
+import { endpoint } from '../middlewares'
+import { createBoardController } from '../modules/boards/createBoards/controller'
 
 export const createTaskSchema = z.object({
   name: z.string(),
@@ -78,33 +80,13 @@ export const updateBoardSchema = z.object({
   ordered: z.array(z.string()).optional()
 })
 
-export const validateRequest = (schema: ZodSchema<any>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse(req.body)
-      next()
-    } catch (e: any) {
-      res.status(400).json({ error: e.errors })
-    }
-  }
-}
-
 export const kanbanRouter = express.Router()
 
 // Criar um novo painel Kanban
-kanbanRouter.post('/boards', validateRequest(createBoardSchema), async (req: Request, res: Response) => {
-  try {
-    const boardData = req.body
-    const board = new KanbanBoard(boardData)
-    await board.save()
-    res.status(201).json(board)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create board' })
-  }
-})
+kanbanRouter.post('/boards', endpoint(createBoardController))
 
 // Atualizar um painel Kanban
-kanbanRouter.put('/boards/:boardId', validateRequest(updateBoardSchema), async (req: Request, res: Response) => {
+kanbanRouter.put('/boards/:boardId', async (req: Request, res: Response) => {
   try {
     const { boardId } = req.params
     const boardData = req.body
@@ -118,8 +100,18 @@ kanbanRouter.put('/boards/:boardId', validateRequest(updateBoardSchema), async (
   }
 })
 
+// Obter todos os painéis
+kanbanRouter.get('/boards', async (req: Request, res: Response) => {
+  try {
+    const boards = await KanbanBoard.find()
+    res.status(200).json(boards)
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch boards' })
+  }
+})
+
 // Criar uma nova coluna
-kanbanRouter.post('/columns', validateRequest(createColumnSchema), async (req: Request, res: Response) => {
+kanbanRouter.post('/columns', async (req: Request, res: Response) => {
   try {
     const columnData = req.body
     const column = new KanbanColumn(columnData)
@@ -131,7 +123,7 @@ kanbanRouter.post('/columns', validateRequest(createColumnSchema), async (req: R
 })
 
 // Atualizar uma coluna
-kanbanRouter.put('/columns/:columnId', validateRequest(updateColumnSchema), async (req: Request, res: Response) => {
+kanbanRouter.put('/columns/:columnId', async (req: Request, res: Response) => {
   try {
     const { columnId } = req.params
     const columnData = req.body
@@ -146,7 +138,7 @@ kanbanRouter.put('/columns/:columnId', validateRequest(updateColumnSchema), asyn
 })
 
 // Criar uma nova tarefa
-kanbanRouter.post('/tasks', validateRequest(createTaskSchema), async (req: Request, res: Response) => {
+kanbanRouter.post('/tasks', async (req: Request, res: Response) => {
   try {
     const taskData = req.body
     const task = new KanbanTask(taskData)
@@ -158,7 +150,7 @@ kanbanRouter.post('/tasks', validateRequest(createTaskSchema), async (req: Reque
 })
 
 // Atualizar uma tarefa
-kanbanRouter.put('/tasks/:taskId', validateRequest(updateTaskSchema), async (req: Request, res: Response) => {
+kanbanRouter.put('/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params
     const taskData = req.body
@@ -200,16 +192,6 @@ kanbanRouter.get('/columns', async (req: Request, res: Response) => {
     res.status(200).json(columns)
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch columns' })
-  }
-})
-
-// Obter todos os painéis
-kanbanRouter.get('/boards', async (req: Request, res: Response) => {
-  try {
-    const boards = await KanbanBoard.find()
-    res.status(200).json(boards)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch boards' })
   }
 })
 

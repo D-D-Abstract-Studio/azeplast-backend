@@ -7,7 +7,7 @@ import { IKanbanColumn } from '../types/kanban'
 
 const collection = 'kanban_colums'
 
-export const KanbanColumn = new Schema<IKanbanColumn>(
+const ColumnSchema = new Schema<IKanbanColumn>(
   {
     name: { type: String, required: true },
     taskIds: [{ type: Schema.Types.ObjectId, ref: 'Task' }]
@@ -18,6 +18,6 @@ export const KanbanColumn = new Schema<IKanbanColumn>(
   }
 )
 
-setDefaultSettingsSchema(KanbanColumn)
+setDefaultSettingsSchema(ColumnSchema)
 
-export const KanbanColums = azePlastDB.model<IKanbanColumn>(collection, KanbanColumn)
+export const KanbanColumn = azePlastDB.model<IKanbanColumn>(collection, ColumnSchema)
