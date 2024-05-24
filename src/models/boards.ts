@@ -4,14 +4,14 @@ import { azePlastDB } from '@/shared/connection-db'
 import { setDefaultSettingsSchema } from '@/shared'
 
 import { IKanbanBoard } from '../types/kanban'
-import { columnSchema } from './columns'
+import { KanbanColumn } from './columns'
 
 const collection = 'kanban_boards'
 
-const boardsSchema = new Schema<IKanbanBoard>(
+export const KanbanBoard = new Schema<IKanbanBoard>(
   {
     name: { type: String, required: true },
-    columns: { type: Map, of: columnSchema },
+    columns: { type: Map, of: KanbanColumn },
     ordered: { type: [String], required: true }
   },
   {
@@ -20,6 +20,6 @@ const boardsSchema = new Schema<IKanbanBoard>(
   }
 )
 
-setDefaultSettingsSchema(columnSchema)
+setDefaultSettingsSchema(KanbanColumn)
 
-export const KanbanColums = azePlastDB.model<IKanbanBoard>(collection, boardsSchema)
+export const KanbanColums = azePlastDB.model<IKanbanBoard>(collection, KanbanBoard)
