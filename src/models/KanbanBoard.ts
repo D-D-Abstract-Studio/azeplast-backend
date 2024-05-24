@@ -5,13 +5,12 @@ import { setDefaultSettingsSchema } from '@/shared'
 
 import { IKanbanBoard } from '@/types/kanban'
 
-type IKanbanBoardDocument = IKanbanBoard & Document
+type IKanbanBoardDocument = IKanbanBoard & Document & { user: string }
 
 const BoardSchema = new Schema<IKanbanBoardDocument>(
   {
-    name: { type: String, required: true },
-    columns: { type: Object, required: true },
-    ordered: { type: [String], required: true }
+    user: { type: String, required: true },
+    name: { type: String, required: true }
   },
   {
     timestamps: true,
