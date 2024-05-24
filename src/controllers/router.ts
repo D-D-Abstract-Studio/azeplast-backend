@@ -1,119 +1,149 @@
 import { Router } from 'express'
-
-import { endpoint } from '@/middlewares'
-
 import { Request, Response } from 'express'
-import { KanbanTask } from '@/models/KanbanTask'
+import { KanbanTask, status, urgency } from '@/models/KanbanTask'
 import { z } from 'zod'
+import { endpoint } from '@/middlewares'
+import { mock } from './mock'
 
 export const kanbanRouter = Router()
 
 const createTaskSchema = z.object({
   title: z.string(),
+  description: z.string(),
   category: z.string(),
   responsible: z.string(),
-  urgency: z.enum(['low', 'medium', 'high']),
-  dueDate: z.string().transform(str => new Date(str)),
-  status: z.enum(['new', 'in_progress', 'archived']).optional(),
-  user: z.string()
+  urgency: z.custom(value => {
+    if (!urgency.includes(value)) {
+      throw new Error(`Invalid urgency: ${value}, must be one of ${urgency.join(', ')}`)
+    }
+
+    return value
+  }),
+  dueDate: z.number().optional(),
+  status: z.custom(value => {
+    if (!status.includes(value)) {
+      throw new Error(`Invalid status: ${value}, must be one of ${status.join(', ')}`)
+    }
+
+    return value
+  })
 })
-
-// Controlador para criar uma tarefa
-export const createTaskController = async (req: Request, res: Response) => {
-  try {
-    const taskData = createTaskSchema.parse(req.body)
-    const user = req.body.user
-
-    const newTask = new KanbanTask({ ...taskData, user })
-    await newTask.save()
-    res.status(201).json(newTask)
-  } catch (error: any) {
-    res.status(400).json({ error: error.message })
-  }
-}
-
-// Controlador para arquivar uma tarefa
-export const archiveTaskController = async (req: Request, res: Response) => {
-  try {
-    const user = req.body.user
-    const task = await KanbanTask.findOneAndUpdate({ _id: req.params.id, user }, { status: 'archived' }, { new: true })
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found or you do not have permission' })
-    }
-    res.status(200).json(task)
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
-}
-
-// Controlador para obter uma tarefa
-export const getTaskController = async (req: Request, res: Response) => {
-  try {
-    const user = req.body.user
-    const task = await KanbanTask.findOne({ _id: req.params.id, user })
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found or you do not have permission' })
-    }
-    res.status(200).json(task)
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
-}
-
-// Controlador para obter todas as tarefas do usuário
-export const getAllTasksController = async (req: Request, res: Response) => {
-  try {
-    const user = req.body.user
-    const tasks = await KanbanTask.find({ user })
-    res.status(200).json(tasks)
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
-}
 
 const updateTaskSchema = z.object({
   title: z.string().optional(),
+  description: z.string().optional(),
   category: z.string().optional(),
   responsible: z.string().optional(),
   urgency: z.enum(['low', 'medium', 'high']).optional(),
-  dueDate: z
-    .string()
-    .optional()
-    .transform(str => (str ? new Date(str) : undefined)),
-  status: z.enum(['new', 'in_progress', 'archived']).optional()
+  dueDate: z.number().optional(),
+  status: z.enum(['To Do', 'In Progress', 'Ready To Test', 'Done']).optional(),
+  comments: z
+    .array(
+      z.object({
+        name: z.string(),
+        message: z.string(),
+        messageType: z.enum(['text', 'image']),
+        createdAt: z.string()
+      })
+    )
+    .optional(),
+  assignee: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        avatarUrl: z.string()
+      })
+    )
+    .optional(),
+  labels: z.array(z.string()).optional(),
+  attachments: z.array(z.string()).optional()
 })
 
-// Controlador para atualizar uma tarefa
-export const updateTaskController = async (req: Request, res: Response) => {
-  try {
-    const taskData = updateTaskSchema.parse(req.body)
-    const user = req.body.user
-    const task = await KanbanTask.findOneAndUpdate({ _id: req.params.id, user }, taskData, { new: true })
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found or you do not have permission' })
-    }
-    res.status(200).json(task)
-  } catch (error: any) {
-    res.status(400).json({ error: error.message })
-  }
-}
+kanbanRouter.get(
+  '/tasks',
+  endpoint(async (req: Request, res: Response) => {
+    res.status(200).json(mock)
 
-// Controlador para deletar uma tarefa
-export const deleteTaskController = async (req: Request, res: Response) => {
-  try {
-    const user = req.body.user
-    const task = await KanbanTask.findOneAndDelete({ _id: req.params.id, user })
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found or you do not have permission' })
+    /* try {
+      // Fetch tasks from the database
+      const tasks = await KanbanTask.find()
+      res.status(200).json({ board: tasks })
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch tasks' })
     }
-    res.status(200).json({ message: 'Task deleted successfully' })
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
-}
+   */
+  })
+)
 
-kanbanRouter.post('/kanban', endpoint(createTaskController))
-kanbanRouter.patch('/kanban/:id/archive', endpoint(archiveTaskController))
-kanbanRouter.get('/kanban/:id', endpoint(getTaskController))
-kanbanRouter.get('/kanban', endpoint(getAllTasksController))
-kanbanRouter.patch('/kanban/:id', endpoint(updateTaskController))
+kanbanRouter.post(
+  '/tasks',
+  endpoint(async (req: Request, res: Response) => {
+    createTaskSchema.parse(req.body)
+
+    const user = req.query.user
+
+    const taskData = { ...req.body, user }
+    const newTask = new KanbanTask(taskData)
+
+    await newTask.save().then(() => {
+      res.status(201).json({ message: 'Task created successfully' })
+    })
+  })
+)
+
+kanbanRouter.put(
+  '/tasks/:taskId',
+  endpoint(async (req: Request, res: Response) => {
+    try {
+      await updateTaskSchema.parse(req.body)
+
+      const { taskId } = req.params
+      const updateData = req.body
+      const updatedTask = await KanbanTask.findByIdAndUpdate(taskId, updateData, { new: true })
+      if (!updatedTask) {
+        return res.status(404).json({ error: 'Task not found' })
+      }
+      res.status(200).json(updatedTask)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update task' })
+    }
+  })
+)
+
+kanbanRouter.delete(
+  '/tasks/:taskId',
+  endpoint(async (req: Request, res: Response) => {
+    try {
+      const { taskId } = req.params
+      const deletedTask = await KanbanTask.findByIdAndDelete(taskId)
+      if (!deletedTask) {
+        return res.status(404).json({ error: 'Task not found' })
+      }
+      res.status(200).json({ message: 'Task deleted successfully' })
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to delete task' })
+    }
+  })
+)
+
+kanbanRouter.put(
+  '/tasks/:taskId/move',
+  endpoint(async (req: Request, res: Response) => {
+    try {
+      const { taskId } = req.params
+      const { toColumnId, position } = req.body
+      const task = await KanbanTask.findById(taskId)
+      if (!task) {
+        return res.status(404).json({ error: 'Task not found' })
+      }
+      // Update the task's status and position here based on the toColumnId and position
+      task.status = toColumnId // Update the status to the new column ID
+      // Implement the logic to update the task's position within the column
+      await task.save()
+      res.status(200).json(task)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to move task' })
+    }
+  })
+)
