@@ -1,8 +1,8 @@
 import { HTTPError } from '@/errors'
 
-import { UserSchema } from './validation'
-
 import { IUser, User } from '@/models/User'
+
+import { UserSchema } from '../validations'
 
 export const createUserService = async (data: IUser) => {
   const { name, permissions } = UserSchema.parse(data)
