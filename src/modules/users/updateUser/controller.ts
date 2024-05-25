@@ -3,10 +3,10 @@ import { updateUserService } from './service'
 import type { RequestHandler } from 'express'
 
 export const updateUserController: RequestHandler = async (req, res) => {
-  await updateUserService({
-    userId: req.params.id,
+  const user = await updateUserService({
+    userId: req.params?.userId,
     ...req.body
   })
 
-  return res.status(201).json({ message: 'User updated' })
+  return res.status(201).json({ message: 'User updated', user })
 }

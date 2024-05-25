@@ -15,9 +15,11 @@ export const updateUserService = async (data: IUser & { userId: string }) => {
 
   if (name) {
     const existingUser = await User.findOne({ name })
+
     if (existingUser && existingUser.id !== data.userId) {
       throw new HTTPError('User with this name already exists', 409)
     }
+
     user.name = name
   }
 
@@ -28,4 +30,6 @@ export const updateUserService = async (data: IUser & { userId: string }) => {
   await user.save().catch(error => {
     throw new HTTPError('Failed to update user', 500)
   })
+
+  return user
 }
