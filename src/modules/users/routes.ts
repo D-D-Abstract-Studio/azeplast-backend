@@ -6,6 +6,7 @@ import { createUserController } from './createUser/controller'
 import { updateUserController } from './updateUser/controller'
 import { getAllUsersController } from './getAllUsers/controller'
 import { getOneUserController } from './getOneUser/controller'
+import { deleteDomainController } from './removeUser/controller'
 
 export const userRouter = express.Router()
 
@@ -16,3 +17,5 @@ userRouter.patch('/user', endpoint(updateUserController))
 userRouter.get('/users', endpoint(getAllUsersController))
 
 userRouter.get('/user/:userId', endpoint(getOneUserController))
+
+userRouter.delete('/user/:userId', endpoint(deleteDomainController))
