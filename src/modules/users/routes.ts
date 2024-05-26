@@ -12,7 +12,7 @@ export const userRouter = express.Router()
 
 userRouter.post('/user', endpoint(createUserController))
 
-userRouter.patch('/user/:userId', endpoint(updateUserController))
+userRouter.put('/user/:userId', endpoint(updateUserController))
 
 userRouter.get('/users', endpoint(getAllUsersController))
 
