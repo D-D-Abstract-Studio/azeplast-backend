@@ -5,8 +5,7 @@ import morgan from 'morgan'
 
 import { exception, exceptionValidation, notFound } from './middlewares'
 
-import { kanbanRouter } from './controllers/router'
-import { userRouter } from './modules/users/routes'
+import { router } from './router'
 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -26,8 +25,7 @@ app.use(cors())
 app.options('*', cors())
 app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
 
-app.use(userRouter)
-app.use(kanbanRouter)
+app.use(router)
 
 app.use(notFound)
 app.use(exceptionValidation)

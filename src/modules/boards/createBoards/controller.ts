@@ -8,5 +8,5 @@ export const createBoardController: RequestHandler = async (req, res) => {
     ...req.body
   })
 
-  return res.status(201).json(result)
+  return res.status(201).json({ items: result, message: 'Quadro criado com sucesso' })
 }

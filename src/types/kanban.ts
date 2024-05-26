@@ -21,6 +21,8 @@ export type IKanbanColumn = {
 
 export type IKanbanBoard = {
   name: string
+  usersIds: string[]
+  columnIds: string[]
 }
 
 export type IKanban = {

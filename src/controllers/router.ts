@@ -82,34 +82,6 @@ export const updateBoardSchema = z.object({
 
 export const kanbanRouter = express.Router()
 
-// Criar um novo painel Kanban
-kanbanRouter.post('/boards', endpoint(createBoardController))
-
-// Atualizar um painel Kanban
-kanbanRouter.put('/boards/:boardId', async (req: Request, res: Response) => {
-  try {
-    const { boardId } = req.params
-    const boardData = req.body
-    const board = await KanbanBoard.findByIdAndUpdate(boardId, boardData, { new: true })
-    if (!board) {
-      return res.status(404).json({ error: 'Board not found' })
-    }
-    res.json(board)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to update board' })
-  }
-})
-
-// Obter todos os painéis
-kanbanRouter.get('/boards', async (req: Request, res: Response) => {
-  try {
-    const boards = await KanbanBoard.find()
-    res.status(200).json(boards)
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch boards' })
-  }
-})
-
 // Criar uma nova coluna
 kanbanRouter.post('/columns', async (req: Request, res: Response) => {
   try {
