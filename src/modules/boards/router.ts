@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 
 import { endpoint } from '@/middlewares'
 
-import { updateUserController } from './updateUser/controller'
+import { updateBoardController } from './updateBoard/controller'
 import { getAllBoardsController } from './getAllUsers/controller'
 import { getOneUserController } from './getOneUser/controller'
 import { deleteBoardController } from './removeBoard/controller'
@@ -14,7 +14,7 @@ router.get('/', endpoint(getAllBoardsController))
 
 router.post('/', endpoint(createBoardController))
 
-router.put('/:boardId', endpoint(updateUserController))
+router.put('/:boardId', endpoint(updateBoardController))
 
 router.get('/:boardId', endpoint(getOneUserController))
 

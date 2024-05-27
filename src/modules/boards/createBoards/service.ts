@@ -1,7 +1,7 @@
 import { HTTPError } from '@/errors'
 
 import { KanbanBoard } from '@/models/KanbanBoard'
-import { BoardSchema } from './validation'
+import { BoardSchema } from '../validations'
 
 import { IKanbanBoard } from '@/types/kanban'
 

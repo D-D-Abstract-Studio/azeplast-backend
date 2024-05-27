@@ -1,8 +1,9 @@
 import { z } from 'zod'
 
-import { IUser, userPermissions } from '@/models/User'
+import { IKanbanBoard } from '@/types/kanban'
 
-export const UserSchema = z.object<SchemaRequiredZod<IUser>>({
+export const BoardSchema = z.object<SchemaRequiredZod<IKanbanBoard>>({
   name: z.string(),
-  permissions: z.enum(userPermissions)
+  usersIds: z.array(z.string()),
+  columnIds: z.array(z.string())
 })
