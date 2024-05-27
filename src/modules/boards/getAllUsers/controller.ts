@@ -1,9 +1,9 @@
-import { getAllUsersService } from './service'
+import { getAllBoardsService } from './service'
 
 import type { RequestHandler } from 'express'
 
-export const getAllUsersController: RequestHandler = async (req, res) => {
-  const users = await getAllUsersService()
+export const getAllBoardsController: RequestHandler = async (req, res) => {
+  const users = await getAllBoardsService()
 
-  return res.status(201).json(users)
+  return res.status(201).json({ items: users })
 }
