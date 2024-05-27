@@ -14,10 +14,10 @@ router.get('/', endpoint(getAllUsersController))
 
 router.post('/', endpoint(createUserController))
 
-router.put('/:userId', endpoint(updateUserController))
+router.put('/:id', endpoint(updateUserController))
 
-router.get('/:user', endpoint(getOneUserController))
+router.get('/:id', endpoint(getOneUserController))
 
-router.delete('/:userId', endpoint(deleteDomainController))
+router.delete('/:id', endpoint(deleteDomainController))
 
 export default router

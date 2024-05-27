@@ -4,7 +4,7 @@ import type { RequestHandler } from 'express'
 
 export const updateUserController: RequestHandler = async (req, res) => {
   const user = await updateUserService({
-    userId: req.params?.userId,
+    userId: req.params?.id,
     ...req.body
   })
 
