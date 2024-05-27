@@ -27,11 +27,12 @@ export type IKanbanBoard = {
   name: string
   usersIds: string[]
   columnIds: string[]
+  ordered: string[]
 }
 
-export type IKanban = {
+type IKanban = {
   boards: Record<string, IKanbanBoard>
   columns: Record<string, IKanbanColumn>
-  ordered: string[]
   tasks: Record<string, IKanbanTask>
+  ordered: string[]
 }
