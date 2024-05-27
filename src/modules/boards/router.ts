@@ -5,7 +5,7 @@ import { endpoint } from '@/middlewares'
 import { updateUserController } from './updateUser/controller'
 import { getAllBoardsController } from './getAllUsers/controller'
 import { getOneUserController } from './getOneUser/controller'
-import { deleteDomainController } from './removeUser/controller'
+import { deleteBoardController } from './removeBoard/controller'
 import { createBoardController } from './createBoards/controller'
 
 const router = Router()
@@ -18,6 +18,6 @@ router.put('/:boardId', endpoint(updateUserController))
 
 router.get('/:boardId', endpoint(getOneUserController))
 
-router.delete('/:boardId', endpoint(deleteDomainController))
+router.delete('/:boardId', endpoint(deleteBoardController))
 
 export default router

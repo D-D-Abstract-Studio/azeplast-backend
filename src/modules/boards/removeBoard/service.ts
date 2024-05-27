@@ -12,7 +12,7 @@ export const deleteDomainSchema = Z.object({
   id: Z.string()
 })
 
-export const deleteUserService = async (data: DeleteUserService) => {
+export const deleteBoardService = async (data: DeleteUserService) => {
   const { id } = deleteDomainSchema.parse(data)
 
   const domainExists = await User.findOne({ _id: id })

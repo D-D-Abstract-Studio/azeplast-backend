@@ -1,8 +1,8 @@
 import type { RequestHandler } from 'express'
-import { deleteUserService } from './service'
+import { deleteBoardService } from './service'
 
-export const deleteDomainController: RequestHandler = async (req, res) => {
-  await deleteUserService({
+export const deleteBoardController: RequestHandler = async (req, res) => {
+  await deleteBoardService({
     id: req.params?.userId
   })
 
