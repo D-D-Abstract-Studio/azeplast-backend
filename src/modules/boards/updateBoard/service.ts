@@ -6,7 +6,7 @@ import { KanbanBoard } from '@/models/KanbanBoard'
 import { IKanbanBoard } from '@/types/kanban'
 
 export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, archived } = BoardSchema.parse(data)
+  const { name, usersIds, columnIds, archived, ordered } = BoardSchema.parse(data)
 
   const board = await KanbanBoard.findById(data.boardId)
 
@@ -34,6 +34,10 @@ export const updateBoardService = async (data: IKanbanBoard & { boardId: string 
 
   if (archived) {
     board.archived = archived
+  }
+
+  if (ordered) {
+    board.ordered = ordered
   }
 
   await board.save().catch(error => {
