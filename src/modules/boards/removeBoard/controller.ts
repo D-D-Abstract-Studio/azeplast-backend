@@ -3,8 +3,8 @@ import { deleteBoardService } from './service'
 
 export const deleteBoardController: RequestHandler = async (req, res) => {
   await deleteBoardService({
-    id: req.params?.userId
+    id: req.params?.boardId
   })
 
-  return res.status(202).json({ message: 'User deleted successfully' })
+  return res.status(202).json({ message: 'Quadro deletado com sucesso' })
 }
