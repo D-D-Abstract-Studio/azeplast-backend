@@ -1,17 +1,17 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanBoard } from '@/models/KanbanBoard'
 import { ColumnSchema } from '../validations'
 
-import { IKanbanBoard } from '@/types/kanban'
+import { IKanbanColumn } from '@/types/kanban'
+import { KanbanColumn } from '@/models/KanbanColumn'
 
-export const createBoardService = async (data: IKanbanBoard) => {
-  const boardData = ColumnSchema.parse(data)
+export const createColumnService = async (data: IKanbanColumn) => {
+  const columnData = ColumnSchema.parse(data)
 
-  const board = new KanbanBoard(boardData)
+  const column = new KanbanColumn(columnData)
 
-  const newBoard = await board.save().catch(error => {
-    throw new HTTPError('Failed to create board', 500)
+  const newBoard = await column.save().catch(error => {
+    throw new HTTPError('Failed to create column', 500)
   })
 
   return newBoard

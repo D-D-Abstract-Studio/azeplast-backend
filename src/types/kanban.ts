@@ -16,6 +16,7 @@ export type IKanbanTask = {
 }
 
 export type IKanbanColumn = {
+  boardId: string
   archived: boolean
   name: string
   taskIds: string[]
