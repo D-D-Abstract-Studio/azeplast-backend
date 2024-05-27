@@ -11,6 +11,7 @@ type IKanbanColumnDocument = IKanbanColumn & Document
 const ColumnSchema = new Schema<IKanbanColumnDocument>(
   {
     name: { type: String, required: true },
+    archived: { type: Boolean, required: true, default: false },
     taskIds: [{ type: Schema.Types.ObjectId, ref: 'Task' }]
   },
   {

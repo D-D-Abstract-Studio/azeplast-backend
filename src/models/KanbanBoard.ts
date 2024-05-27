@@ -10,6 +10,7 @@ type IKanbanBoardDocument = IKanbanBoard & Document
 const BoardSchema = new Schema<IKanbanBoardDocument>(
   {
     columnIds: { type: [String], required: true },
+    archived: { type: Boolean, required: true, default: false },
     usersIds: { type: [String], required: true },
     name: { type: String, required: true }
   },
