@@ -3,13 +3,13 @@ import express, { Router } from 'express'
 import { endpoint } from '@/middlewares'
 
 import { updateBoardController } from './updateTasks/controller'
-import { getAllColumnsController } from './getAllTasks/controller'
+import { getAllTasksController } from './getAllTasks/controller'
 import { deleteBoardController } from './removeTasks/controller'
 import { createColumnController } from './createTasks/controller'
 
 const router = Router()
 
-router.get('/', endpoint(getAllColumnsController))
+router.get('/', endpoint(getAllTasksController))
 
 router.post('/', endpoint(createColumnController))
 

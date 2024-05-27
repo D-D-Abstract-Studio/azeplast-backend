@@ -1,9 +1,9 @@
-import { getAllColumnsService } from './service'
+import { getAllTasksService as getAllTasksService } from './service'
 
 import type { RequestHandler } from 'express'
 
-export const getAllColumnsController: RequestHandler = async (req, res) => {
-  const columns = await getAllColumnsService()
+export const getAllTasksController: RequestHandler = async (req, res) => {
+  const tasks = await getAllTasksService()
 
-  return res.status(201).json(columns)
+  return res.status(201).json(tasks)
 }

@@ -1,11 +1,11 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanColumn } from '@/models/KanbanColumn'
+import { KanbanTask } from '@/models/KanbanTask'
 
-export const getAllColumnsService = async () => {
-  const columns = await KanbanColumn.find().catch(error => {
-    throw new HTTPError('Failed to fetch boards', 500)
+export const getAllTasksService = async () => {
+  const tasks = await KanbanTask.find().catch(error => {
+    throw new HTTPError('Failed to fetch tasks', 500)
   })
 
-  return columns
+  return tasks
 }
