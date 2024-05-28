@@ -13,8 +13,8 @@ router.get('/', endpoint(getAllBoardsController))
 
 router.post('/', endpoint(createBoardController))
 
-router.put('/:boardId', endpoint(updateBoardController))
+router.put('/:id', endpoint(updateBoardController))
 
-router.delete('/:boardId', endpoint(deleteBoardController))
+router.delete('/:id', endpoint(deleteBoardController))
 
 export default router

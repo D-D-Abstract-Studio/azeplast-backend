@@ -4,7 +4,7 @@ import type { RequestHandler } from 'express'
 
 export const updateBoardController: RequestHandler = async (req, res) => {
   const user = await updateBoardService({
-    boardId: req.params?.boardId,
+    boardId: req.params?.id,
     ...req.body
   })
 

@@ -1,44 +1,48 @@
 import { HTTPError } from '@/errors'
 
 import { ColumnSchema } from '../validations'
-import { KanbanBoard } from '@/models/KanbanBoard'
 
-import { IKanbanBoard } from '@/types/kanban'
+import { IKanbanColumn } from '@/types/kanban'
+import { KanbanColumn } from '@/models/KanbanColumn'
 
-export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, archived } = ColumnSchema.parse(data)
+export const updateBoardService = async (data: IKanbanColumn & { id: string }) => {
+  const { name, boardId, archived, taskIds } = ColumnSchema.parse(data)
 
-  const board = await KanbanBoard.findById(data.boardId)
+  const colunm = await KanbanColumn.findById(data.id)
 
-  if (!board) {
-    throw new HTTPError('Board not found', 404)
+  if (!colunm) {
+    throw new HTTPError('Column not found', 404)
   }
 
   if (name) {
-    const existingBoard = await KanbanBoard.findOne({ name })
+    const existingBoard = await KanbanColumn.findOne({ name })
 
     if (existingBoard && existingBoard.id !== data.boardId) {
-      throw new HTTPError('Board with this name already exists', 409)
+      throw new HTTPError('Column with this name already exists', 400)
     }
 
-    board.name = name
-  }
-
-  if (usersIds) {
-    board.usersIds = usersIds
-  }
-
-  if (columnIds) {
-    board.columnIds = columnIds
+    colunm.name = name
   }
 
   if (archived) {
-    board.archived = archived
+    colunm.archived = archived
   }
 
-  await board.save().catch(error => {
-    throw new HTTPError('Failed to update board', 500)
+  if (taskIds) {
+    colunm.taskIds = taskIds
+  }
+
+  if (archived) {
+    colunm.archived = archived
+  }
+
+  if (boardId) {
+    colunm.boardId = boardId
+  }
+
+  await colunm.save().catch(error => {
+    throw new HTTPError('Failed to update column', 500)
   })
 
-  return board
+  return colunm
 }
