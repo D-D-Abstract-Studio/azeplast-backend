@@ -16,8 +16,8 @@ const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
     archived: { type: Boolean, required: true, default: false },
     description: { type: String, required: true },
     assignee: [{ name: { type: String, required: true } }],
-    dueDate: { type: Date, required: true },
-    reporter: { user: { type: String, required: true } }
+    dueDate: { type: String, required: true },
+    reporter: { type: String, required: true }
   },
   {
     timestamps: true,

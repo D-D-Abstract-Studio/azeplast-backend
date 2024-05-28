@@ -9,10 +9,8 @@ export type IKanbanTask = {
   assignee: Array<{
     name?: string
   }>
-  dueDate: Date
-  reporter: {
-    user: string
-  }
+  dueDate: string
+  reporter: string
 }
 
 export type IKanbanColumn = {

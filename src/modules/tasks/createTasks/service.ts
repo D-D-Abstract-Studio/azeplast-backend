@@ -1,14 +1,14 @@
 import { HTTPError } from '@/errors'
 
+import { KanbanTask } from '@/models/KanbanTask'
 import { TaskSchema } from '../validations'
 
-import { IKanbanColumn } from '@/types/kanban'
-import { KanbanColumn } from '@/models/KanbanColumn'
+import { IKanbanTask } from '@/types/kanban'
 
-export const createTasksService = async (data: IKanbanColumn) => {
+export const createTasksService = async (data: IKanbanTask) => {
   const taskData = TaskSchema.parse(data)
 
-  const task = new KanbanColumn(taskData)
+  const task = new KanbanTask(taskData)
 
   const newTask = await task.save().catch(error => {
     throw new HTTPError('Failed to create task', 500)
