@@ -1,12 +1,12 @@
-import { createColumnService } from './service'
+import { createTasksService } from './service'
 
 import type { RequestHandler } from 'express'
 
-export const createColumnController: RequestHandler = async (req, res) => {
-  const result = await createColumnService({
+export const createTaskController: RequestHandler = async (req, res) => {
+  const result = await createTasksService({
     user: req.query.user,
     ...req.body
   })
 
-  return res.status(201).json({ items: result, message: 'Coluna criada com sucesso' })
+  return res.status(201).json({ items: result, message: 'Task created successfully' })
 }

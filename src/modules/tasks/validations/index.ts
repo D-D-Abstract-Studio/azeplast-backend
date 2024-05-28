@@ -1,10 +1,14 @@
 import { z } from 'zod'
 
-import { IKanbanColumn } from '@/types/kanban'
+import { IKanbanTask, priorityValues } from '@/types/kanban'
 
-export const ColumnSchema = z.object<SchemaRequiredZod<IKanbanColumn>>({
+export const TaskSchema = z.object<SchemaRequiredZod<IKanbanTask>>({
   name: z.string(),
-  boardId: z.string(),
   archived: z.boolean(),
-  taskIds: z.array(z.string())
+  priority: z.enum(priorityValues),
+  categories: z.array(z.string()),
+  description: z.string(),
+  assignee: z.array(z.object({ name: z.string().optional() })),
+  dueDate: z.date(),
+  reporter: z.object({ user: z.string() })
 })

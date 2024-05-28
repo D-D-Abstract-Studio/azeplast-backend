@@ -5,13 +5,13 @@ import { endpoint } from '@/middlewares'
 import { updateBoardController } from './updateTasks/controller'
 import { getAllTasksController } from './getAllTasks/controller'
 import { deleteBoardController } from './removeTasks/controller'
-import { createColumnController } from './createTasks/controller'
+import { createTaskController } from './createTasks/controller'
 
 const router = Router()
 
 router.get('/', endpoint(getAllTasksController))
 
-router.post('/', endpoint(createColumnController))
+router.post('/', endpoint(createTaskController))
 
 router.put('/:id', endpoint(updateBoardController))
 
