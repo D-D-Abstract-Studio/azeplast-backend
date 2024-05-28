@@ -9,6 +9,6 @@ export const TaskSchema = z.object<SchemaRequiredZod<IKanbanTask>>({
   categories: z.array(z.string()),
   description: z.string(),
   assignee: z.array(z.object({ name: z.string().optional() })),
-  dueDate: z.date(),
-  reporter: z.object({ user: z.string() })
+  dueDate: z.string(),
+  reporter: z.string()
 })
