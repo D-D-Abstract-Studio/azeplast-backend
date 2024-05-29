@@ -6,10 +6,13 @@ import { updateBoardController } from './updateTasks/controller'
 import { getAllTasksController } from './getAllTasks/controller'
 import { deleteTaskController } from './removeTasks/controller'
 import { createTaskController } from './createTasks/controller'
+import { getOneTaskController } from './getOneUser/controller'
 
 const router = Router()
 
 router.get('/', endpoint(getAllTasksController))
+
+router.get('/:id', endpoint(getOneTaskController))
 
 router.post('/', endpoint(createTaskController))
 
