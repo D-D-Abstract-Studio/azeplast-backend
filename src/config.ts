@@ -36,5 +36,5 @@ export const env = {
 
 export const dbMongo = {
   ...env,
-  dbUrl: `mongodb://${env.dbUser}:${env.dbPassword}@${env.dbDomain}:${env.dbPort}/${env.dbDatabase}?authSource=admin`
+  dbUrl: `mongodb://${process.env.MONGO_DOMAIN}:${process.env.MONGODB_PORT}/${env.dbDatabase}?authSource=admin`
 }
