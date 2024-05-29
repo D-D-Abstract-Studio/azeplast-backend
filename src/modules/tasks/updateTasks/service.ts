@@ -1,44 +1,24 @@
 import { HTTPError } from '@/errors'
 
+import { KanbanTask } from '@/models/KanbanTask'
 import { TaskSchema } from '../validations'
-import { KanbanBoard } from '@/models/KanbanBoard'
 
 import { IKanbanBoard } from '@/types/kanban'
 
-export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, archived } = TaskSchema.parse(data)
+export const updateBoardService = async (data: IKanbanBoard & { id: string }) => {
+  const { name, archived, priority, categories, description, assignee, dueDate, reporter } = TaskSchema.parse(data)
 
-  const board = await KanbanBoard.findById(data.boardId)
+  const task = await KanbanTask.findById(data.id)
 
-  if (!board) {
-    throw new HTTPError('Board not found', 404)
+  if (!task) {
+    throw new HTTPError('Task not found', 404)
   }
 
-  if (name) {
-    const existingBoard = await KanbanBoard.findOne({ name })
+  Object.assign(task, { name, archived, priority, categories, description, assignee, dueDate, reporter })
 
-    if (existingBoard && existingBoard.id !== data.boardId) {
-      throw new HTTPError('Board with this name already exists', 409)
-    }
-
-    board.name = name
-  }
-
-  if (usersIds) {
-    board.usersIds = usersIds
-  }
-
-  if (columnIds) {
-    board.columnIds = columnIds
-  }
-
-  if (archived) {
-    board.archived = archived
-  }
-
-  await board.save().catch(error => {
-    throw new HTTPError('Failed to update board', 500)
+  await task.save().catch(error => {
+    throw new HTTPError('Failed to update task', 500)
   })
 
-  return board
+  return task
 }

@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 
 import { endpoint } from '@/middlewares'
 
-import { updateBoardController } from './updateTasks/controller'
+import { updateTaskController } from './updateTasks/controller'
 import { getAllTasksController } from './getAllTasks/controller'
 import { deleteTaskController } from './removeTasks/controller'
 import { createTaskController } from './createTasks/controller'
@@ -16,7 +16,7 @@ router.get('/:id', endpoint(getOneTaskController))
 
 router.post('/', endpoint(createTaskController))
 
-router.put('/:id', endpoint(updateBoardController))
+router.put('/:id', endpoint(updateTaskController))
 
 router.delete('/:id', endpoint(deleteTaskController))
 
