@@ -14,8 +14,8 @@ const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
     priority: { type: String, enum: priorityValues, required: true },
     categories: { type: [String], required: true },
     archived: { type: Boolean, required: true, default: false },
-    description: { type: String, required: true },
     assignee: [{ name: { type: String, required: true } }],
+    description: { type: String, required: true },
     dueDate: { type: String, required: true },
     reporter: { type: String, required: true }
   },
