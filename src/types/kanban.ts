@@ -21,7 +21,6 @@ export type IKanbanColumn = {
 }
 
 export type IKanbanBoard = {
-  archived: boolean
   name: string
   usersIds: string[]
   columnIds: string[]

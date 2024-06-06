@@ -6,7 +6,7 @@ import { KanbanBoard } from '@/models/KanbanBoard'
 import { IKanbanBoard } from '@/types/kanban'
 
 export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, archived, ordered } = BoardSchema.parse(data)
+  const { name, usersIds, columnIds, ordered } = BoardSchema.parse(data)
 
   const board = await KanbanBoard.findById(data.boardId)
 
@@ -24,21 +24,7 @@ export const updateBoardService = async (data: IKanbanBoard & { boardId: string 
     board.name = name
   }
 
-  if (usersIds) {
-    board.usersIds = usersIds
-  }
-
-  if (columnIds) {
-    board.columnIds = columnIds
-  }
-
-  if (archived) {
-    board.archived = archived
-  }
-
-  if (ordered) {
-    board.ordered = ordered
-  }
+  Object.assign(board, { name, usersIds, columnIds, ordered })
 
   await board.save().catch(error => {
     throw new HTTPError('Failed to update board', 500)
