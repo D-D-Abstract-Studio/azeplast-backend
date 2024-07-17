@@ -6,7 +6,7 @@ import { updateTaskController } from './updateTasks/controller'
 import { getAllTasksController } from './getAllTasks/controller'
 import { deleteTaskController } from './removeTasks/controller'
 import { createTaskController } from './createTasks/controller'
-import { getOneTaskController } from './getOneUser/controller'
+import { getOneTaskController } from './getOneTask/controller'
 
 const router = Router()
 
