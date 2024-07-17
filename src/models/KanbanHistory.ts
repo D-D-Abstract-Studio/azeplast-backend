@@ -4,35 +4,31 @@ import { azePlastDB } from '@/shared/connection-db'
 
 import { setDefaultSettingsSchema } from '@/shared'
 
+import { collectionsData } from '@/config'
+
 import { type Types } from 'mongoose'
 
 export type IFilter = {
-  id: string
-  userId: Types.ObjectId | string
-  launchId: string
-  type: string
-  name: string
-  description: string
-  filters: Record<string, string | Array<string>>
+  taskId: string
+  modifications: Array<{
+    userId: string
+    fields: Array<string>
+  }>
 }
 
 type IKanbanBoardDocument = IFilter & Document
 
 const FilterSchema = new Schema<IKanbanBoardDocument>(
   {
-    userId: { type: String, required: true },
-    launchId: { type: String, required: true },
-    type: { type: String, required: true },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    filters: { type: Object, required: true }
+    taskId: { type: String, required: true },
+    modifications: [{ type: Schema.Types.ObjectId, ref: 'Task' }]
   },
   {
     timestamps: true,
-    collection: 'histories_models'
+    collection: collectionsData.KanbanHistory.collection
   }
 )
 
 setDefaultSettingsSchema(FilterSchema)
 
-export const KanbanHistory = azePlastDB.model<IKanbanBoardDocument>('History', FilterSchema)
+export const KanbanHistory = azePlastDB.model<IKanbanBoardDocument>(collectionsData.KanbanHistory.name, FilterSchema)

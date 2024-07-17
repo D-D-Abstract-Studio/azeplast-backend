@@ -3,8 +3,10 @@ import { Schema } from 'mongoose'
 import { azePlastDB } from '@/shared/connection-db'
 import { setDefaultSettingsSchema } from '@/shared'
 
-import { IKanbanTask, priorityValues } from '@/types/kanban'
-import { Document } from 'mongoose'
+import { collectionsData } from '@/config'
+
+import { type IKanbanTask, priorityValues } from '@/types/kanban'
+import type { Document } from 'mongoose'
 
 type IKanbanTaskDocument = IKanbanTask & Document
 
@@ -21,10 +23,10 @@ const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
   },
   {
     timestamps: true,
-    collection: 'kanban_tasks'
+    collection: collectionsData.KanbanTask.collection
   }
 )
 
 setDefaultSettingsSchema(KanbanTaskSchema)
 
-export const KanbanTask = azePlastDB.model<IKanbanTaskDocument>('KanbanTask', KanbanTaskSchema)
+export const KanbanTask = azePlastDB.model<IKanbanTaskDocument>(collectionsData.KanbanTask.name, KanbanTaskSchema)

@@ -38,3 +38,26 @@ export const dbMongo = {
   ...env,
   dbUrl: `mongodb://${process.env.MONGO_DOMAIN}:${process.env.MONGODB_PORT}/${env.dbDatabase}?authSource=admin`
 }
+
+export const collectionsData = {
+  KanbanTask: {
+    name: 'KanbanTask',
+    collection: 'kanban_tasks'
+  },
+  KanbanBoard: {
+    name: 'KanbanBoard',
+    collection: 'kanban_boards'
+  },
+  KanbanColumn: {
+    name: 'KanbanColumn',
+    collection: 'kanban_columns'
+  },
+  KanbanHistory: {
+    name: 'KanbanHistory',
+    collection: 'histories_models'
+  },
+  User: {
+    name: 'User',
+    collection: 'users'
+  }
+}

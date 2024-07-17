@@ -1,5 +1,7 @@
 import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
 
+import { collectionsData } from '@/config'
+
 import { type Document, Schema } from 'mongoose'
 
 export const userPermissions = ['user', 'admin'] as const
@@ -15,10 +17,10 @@ const UserSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-    collection: 'users'
+    collection: collectionsData.User.collection
   }
 )
 
 setDefaultSettingsSchema(UserSchema)
 
-export const User = azePlastDB.model<IUser>('User', UserSchema)
+export const User = azePlastDB.model<IUser>(collectionsData.User.name, UserSchema)

@@ -1,3 +1,5 @@
+import type { Types } from 'mongoose'
+
 export const priorityValues = ['baixa', 'média', 'alta'] as const
 
 export type IKanbanTask = {
@@ -14,22 +16,15 @@ export type IKanbanTask = {
 }
 
 export type IKanbanColumn = {
-  boardId: string
+  boardId: Types.ObjectId
+  taskIds: Array<Types.ObjectId>
   archived: boolean
   name: string
-  taskIds: string[]
 }
 
 export type IKanbanBoard = {
   name: string
-  usersIds: string[]
-  columnIds: string[]
-  ordered: string[]
-}
-
-type IKanban = {
-  boards: Record<string, IKanbanBoard>
-  columns: Record<string, IKanbanColumn>
-  tasks: Record<string, IKanbanTask>
+  usersIds: Array<Types.ObjectId>
+  columnIds: Array<Types.ObjectId>
   ordered: string[]
 }
