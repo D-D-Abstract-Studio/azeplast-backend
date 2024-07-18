@@ -13,6 +13,7 @@ type IKanbanTaskDocument = IKanbanTask & Document
 const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
   {
     name: { type: String, required: true },
+    history: { type: [{ user: String, date: Date }] },
     priority: { type: String, enum: priorityValues, required: true },
     categories: { type: [String], required: true },
     archived: { type: Boolean, required: true, default: false },

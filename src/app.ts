@@ -7,10 +7,6 @@ import { exception, exceptionValidation, notFound } from './middlewares'
 
 import { router } from './router'
 
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-dayjs.extend(customParseFormat)
-
 import dotenv from 'dotenv'
 dotenv.config()
 

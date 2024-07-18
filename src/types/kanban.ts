@@ -5,6 +5,10 @@ export const priorityValues = ['baixa', 'média', 'alta'] as const
 export type IKanbanTask = {
   name: string
   archived: boolean
+  history?: Array<{
+    user: String
+    date: Date
+  }>
   priority: (typeof priorityValues)[number]
   categories: string[]
   description: string
@@ -24,7 +28,7 @@ export type IKanbanColumn = {
 
 export type IKanbanBoard = {
   name: string
-  usersIds: Array<Types.ObjectId>
-  columnIds: Array<Types.ObjectId>
+  usersIds: Array<string>
+  columnIds: Array<string>
   ordered: string[]
 }
