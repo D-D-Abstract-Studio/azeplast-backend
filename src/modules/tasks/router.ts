@@ -8,8 +8,6 @@ import { deleteTaskController } from './removeTasks/controller'
 import { createTaskController } from './createTasks/controller'
 import { getOneTaskController } from './getOneTask/controller'
 
-import { upload } from '@/shared/multer-config'
-
 const router = Router()
 
 router.get('/', endpoint(getAllTasksController))
@@ -18,7 +16,7 @@ router.get('/:id', endpoint(getOneTaskController))
 
 router.post('/', endpoint(createTaskController))
 
-router.put('/:id', upload.array('files', 100), endpoint(updateTaskController))
+router.put('/:id', endpoint(updateTaskController))
 
 router.delete('/:id', endpoint(deleteTaskController))
 

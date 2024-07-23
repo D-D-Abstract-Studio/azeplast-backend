@@ -5,10 +5,9 @@ import { TaskSchema } from '../validations'
 
 import { IKanbanTask } from '@/types/kanban'
 
-export const updateTaskService = async (
-  data: IKanbanTask & { id: string; user: string; files: Express.Multer.File[] }
-) => {
-  const { name, archived, priority, categories, description, assignee, dueDate, reporter } = TaskSchema.parse(data)
+export const updateTaskService = async (data: IKanbanTask & { id: string; user: string }) => {
+  const { name, archived, priority, categories, files, description, assignee, dueDate, reporter } =
+    TaskSchema.parse(data)
 
   const task = await KanbanTask.findById(data.id)
 
