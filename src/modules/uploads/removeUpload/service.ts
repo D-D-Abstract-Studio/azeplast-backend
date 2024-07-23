@@ -1,23 +1,14 @@
-import { HTTPError } from '@/errors/httpError'
+import fs from 'node:fs'
+import path from 'node:path'
 
-import { KanbanTask } from '@/models/KanbanTask'
-
-import * as Z from 'zod'
-
-type DeleteUserService = {
+type DeleteUploadService = {
   id: string
 }
 
-const deleteTaskSchema = Z.object({
-  id: Z.string()
-})
+export const deleteUploadService = async ({ id }: DeleteUploadService) => {
+  const filePath = path.join(__dirname, '../../../uploads', id)
 
-export const deleteBoardService = async (data: DeleteUserService) => {
-  const { id } = deleteTaskSchema.parse(data)
+  const file = await fs.promises.unlink(filePath)
 
-  const boardExists = await KanbanTask.findOne({ _id: id })
-
-  if (!boardExists) throw new HTTPError('Task not found', 404)
-
-  return KanbanTask.deleteOne({ _id: id })
+  return file
 }
