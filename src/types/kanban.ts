@@ -9,6 +9,7 @@ export type IKanbanTask = {
     user: String
     date: Date
   }>
+  files: Array<string>
   priority: (typeof priorityValues)[number]
   categories: string[]
   description: string
