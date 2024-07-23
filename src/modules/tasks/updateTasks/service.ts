@@ -17,6 +17,7 @@ export const updateTaskService = async (data: IKanbanTask & { id: string; user: 
 
   Object.assign(task, {
     name,
+    files,
     archived,
     priority,
     categories,
@@ -28,6 +29,7 @@ export const updateTaskService = async (data: IKanbanTask & { id: string; user: 
   })
 
   await task.save().catch(error => {
+    console.log(error)
     throw new HTTPError('Failed to update task', 500)
   })
 
