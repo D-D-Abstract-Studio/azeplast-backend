@@ -3,9 +3,11 @@ import { HTTPError } from '@/errors'
 import { KanbanTask } from '@/models/KanbanTask'
 import { TaskSchema } from '../validations'
 
-import { IKanbanBoard } from '@/types/kanban'
+import { IKanbanTask } from '@/types/kanban'
 
-export const updateBoardService = async (data: IKanbanBoard & { id: string; user: string }) => {
+export const updateTaskService = async (
+  data: IKanbanTask & { id: string; user: string; files: Express.Multer.File[] }
+) => {
   const { name, archived, priority, categories, description, assignee, dueDate, reporter } = TaskSchema.parse(data)
 
   const task = await KanbanTask.findById(data.id)

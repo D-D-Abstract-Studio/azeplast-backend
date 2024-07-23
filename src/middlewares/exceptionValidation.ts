@@ -28,7 +28,7 @@ const error = async (err: any) => {
 export const exceptionValidation: ErrorRequestHandler = async (err, req, res, next) => {
   if (err instanceof ZodError) {
     return res.status(400).json({
-      errors: await error({ message: err.errors.map(error => `${error.path} ${error.message}`) })
+      errors: err.errors.map(error => `${error.path} ${error.message}`)
     })
   }
 

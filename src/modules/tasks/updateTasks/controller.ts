@@ -1,11 +1,11 @@
-import { updateBoardService as updateTaskService } from './service'
+import { updateTaskService as updateTaskService } from './service'
 
 import type { RequestHandler } from 'express'
 
 export const updateTaskController: RequestHandler = async (req, res) => {
   const task = await updateTaskService({
-    user: req.query.user,
     id: req.params?.id,
+    files: req.files,
     ...req.body
   })
 
