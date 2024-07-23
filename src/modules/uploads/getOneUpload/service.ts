@@ -1,18 +1,11 @@
-import fs from 'node:fs'
-import * as Z from 'zod'
+import path from 'node:path'
 
-type DeleteUserService = {
+type GetUploadService = {
   id: string
 }
 
-const getUploadSchema = Z.object({
-  id: Z.string()
-})
+export const getUploadService = async ({ id }: GetUploadService) => {
+  const filePath = path.join(__dirname, '../../../uploads', id)
 
-export const getUploadService = async (data: DeleteUserService) => {
-  const { id } = getUploadSchema.parse(data)
-
-  const file = fs.readFileSync(`src/uploads/${id}`)
-
-  return file
+  return filePath
 }
