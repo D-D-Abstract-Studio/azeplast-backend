@@ -1,9 +1,9 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanBoard } from '@/models/KanbanBoard'
+import { Notifications } from '@/models/Notifications'
 
 export const getAllNotificationsService = async () => {
-  const notifications = await KanbanBoard.find().catch(error => {
+  const notifications = await Notifications.find().catch(error => {
     throw new HTTPError('Failed to get notifications', 500)
   })
 
