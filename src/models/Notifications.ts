@@ -1,20 +1,24 @@
+import { collectionsData } from '@/config'
 import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
 
-import { collectionsData } from '@/config'
+import { z } from 'zod'
+import { Schema as SchemaMongoose } from 'mongoose'
 
-import { type Document, Schema } from 'mongoose'
+export const NotificationSchemaZod = z.object({
+  title: z.string(),
+  description: z.string(),
+  reporter: z.string(),
+  view: z.boolean(),
+  taskId: z.string(),
+  assignee: z.array(z.object({ name: z.string() })),
+  priority: z.string()
+})
 
-export interface INotifications extends Partial<Document> {
-  taskId: Schema.Types.ObjectId
-  view: boolean
-  title: string
-  description: string
-  assignee: [{ name: string }]
-  priority: string
-  reporter: string
+export type INotifications = Omit<DocumentSchemaZod<typeof NotificationSchemaZod>, 'taskId'> & {
+  taskId: SchemaMongoose.Types.ObjectId
 }
 
-const NotificationSchema = new Schema<INotifications>(
+const SchemaModel = new SchemaMongoose<INotifications>(
   {
     reporter: { type: String, required: true },
     view: { type: Boolean, required: true, default: false },
@@ -22,7 +26,7 @@ const NotificationSchema = new Schema<INotifications>(
     description: { type: String, required: true },
     priority: { type: String, required: true },
     assignee: [{ name: { type: String, required: true } }],
-    taskId: { type: Schema.Types.ObjectId, ref: collectionsData.KanbanTask.name }
+    taskId: { type: SchemaMongoose.Types.ObjectId, ref: collectionsData.KanbanTask.name }
   },
   {
     timestamps: true,
@@ -30,6 +34,6 @@ const NotificationSchema = new Schema<INotifications>(
   }
 )
 
-setDefaultSettingsSchema(NotificationSchema)
+setDefaultSettingsSchema(SchemaModel)
 
-export const Notifications = azePlastDB.model<INotifications>(collectionsData.Notifications.name, NotificationSchema)
+export const Notifications = azePlastDB.model<INotifications>(collectionsData.Notifications.name, SchemaModel)

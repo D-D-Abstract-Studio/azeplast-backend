@@ -1,12 +1,12 @@
 import { HTTPError } from '@/errors'
 
-import { BoardSchema } from '../validations'
+import { NotificationSchema } from '../validations'
 import { KanbanBoard } from '@/models/KanbanBoard'
 
 import { IKanbanBoard } from '@/types/kanban'
 
 export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, ordered } = BoardSchema.parse(data)
+  const { name, usersIds, columnIds, ordered } = NotificationSchema.parse(data)
 
   const board = await KanbanBoard.findById(data.boardId)
 

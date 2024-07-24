@@ -1,9 +1,9 @@
-import { createBoardService } from './service'
+import { createNotificationService } from './service'
 
 import type { RequestHandler } from 'express'
 
 export const createNotificationController: RequestHandler = async (req, res) => {
-  const result = await createBoardService(req.body)
+  const notification = await createNotificationService(req.body)
 
-  return res.status(201).json({ items: result, message: 'Quadro criado com sucesso' })
+  return res.status(201).json(notification)
 }

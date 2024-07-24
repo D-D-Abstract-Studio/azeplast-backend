@@ -1,17 +1,16 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanBoard } from '@/models/KanbanBoard'
-import { BoardSchema } from '../validations'
+import { INotifications, Notifications } from '@/models/Notifications'
 
-import { IKanbanBoard } from '@/types/kanban'
+import { NotificationSchema } from '../validations'
 
-export const createBoardService = async (data: IKanbanBoard) => {
-  const boardData = BoardSchema.parse(data)
+export const createNotificationService = async (data: INotifications) => {
+  const boardData = NotificationSchema.parse(data)
 
-  const board = new KanbanBoard(boardData)
+  const notification = new Notifications(boardData)
 
-  const newBoard = await board.save().catch(error => {
-    throw new HTTPError('Failed to create board', 500)
+  const newBoard = await notification.save().catch(error => {
+    throw new HTTPError('Failed to create Notification', 500)
   })
 
   return newBoard
