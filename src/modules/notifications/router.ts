@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 
 import { endpoint } from '@/middlewares'
 
-import { updateNotificationService } from './updateNotification/controller'
+import { updateNotificationController } from './updateNotification/controller'
 import { getAllNotificationsController } from './getAllNotifications/controller'
 import { deleteNotificationController } from './deleteNotification/controller'
 import { createNotificationController } from './createNotification/controller'
@@ -13,7 +13,7 @@ router.get('/', endpoint(getAllNotificationsController))
 
 router.post('/', endpoint(createNotificationController))
 
-router.put('/:id', endpoint(updateNotificationService))
+router.put('/:id', endpoint(updateNotificationController))
 
 router.delete('/:id', endpoint(deleteNotificationController))
 
