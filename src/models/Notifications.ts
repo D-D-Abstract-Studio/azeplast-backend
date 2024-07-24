@@ -4,7 +4,7 @@ import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
 import { z } from 'zod'
 import { Schema as SchemaMongoose } from 'mongoose'
 
-export const NotificationSchemaZod = z.object({
+export const NotificationSchema = z.object({
   title: z.string(),
   description: z.string(),
   reporter: z.string(),
@@ -14,7 +14,7 @@ export const NotificationSchemaZod = z.object({
   priority: z.string()
 })
 
-export type INotifications = Omit<DocumentSchemaZod<typeof NotificationSchemaZod>, 'taskId'> & {
+export type INotifications = Omit<DocumentSchemaZod<typeof NotificationSchema>, 'taskId'> & {
   taskId: SchemaMongoose.Types.ObjectId
 }
 
