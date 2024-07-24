@@ -24,7 +24,7 @@ export type IKanbanTask = {
     date: Date
   }>
   files: Array<File>
-  priority: (typeof priorityValues)[number]
+  priority: string
   categories?: string[]
   description: string
   assignee: Array<{

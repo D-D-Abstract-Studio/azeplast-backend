@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { IKanbanTask, priorityValues } from '@/types/kanban'
+import { IKanbanTask } from '@/types/kanban'
 
 export const TaskSchema = z.object<SchemaRequiredZod<Partial<IKanbanTask>>>({
   name: z.string().min(1, 'Name is required'),
@@ -22,7 +22,7 @@ export const TaskSchema = z.object<SchemaRequiredZod<Partial<IKanbanTask>>>({
       })
     )
     .optional(),
-  priority: z.enum(priorityValues),
+  priority: z.string(),
   categories: z.array(z.string()),
   description: z.string().min(1, 'Description is required'),
   assignee: z.array(z.object({ name: z.string().optional() })),

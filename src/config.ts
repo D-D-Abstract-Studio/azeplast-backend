@@ -56,6 +56,10 @@ export const collectionsData = {
     name: 'KanbanHistory',
     collection: 'histories_models'
   },
+  Notifications: {
+    name: 'Notifications',
+    collection: 'notifications'
+  },
   User: {
     name: 'User',
     collection: 'users'

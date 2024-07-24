@@ -5,7 +5,7 @@ import { setDefaultSettingsSchema } from '@/shared'
 
 import { collectionsData } from '@/config'
 
-import { type IKanbanTask, priorityValues } from '@/types/kanban'
+import type { IKanbanTask } from '@/types/kanban'
 import type { Document } from 'mongoose'
 
 type IKanbanTaskDocument = IKanbanTask & Document
@@ -27,51 +27,15 @@ const fileSchema = new Schema({
 const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
   {
     name: { type: String, required: true },
-    files: {
-      type: [fileSchema]
-    },
-    history: {
-      type: [
-        {
-          user: String,
-          date: Date
-        }
-      ]
-    },
-    priority: {
-      type: String,
-      enum: priorityValues,
-      required: true
-    },
-    categories: {
-      type: [String],
-      required: true
-    },
-    archived: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    assignee: [
-      {
-        name: {
-          type: String,
-          required: true
-        }
-      }
-    ],
-    description: {
-      type: String,
-      required: true
-    },
-    dueDate: {
-      type: String,
-      required: true
-    },
-    reporter: {
-      type: String,
-      required: true
-    }
+    files: { type: [fileSchema] },
+    history: { type: [{ user: String, date: Date }] },
+    priority: { type: String, required: true },
+    categories: { type: [String], required: true },
+    archived: { type: Boolean, required: true, default: false },
+    assignee: [{ name: { type: String, required: true } }],
+    description: { type: String, required: true },
+    dueDate: { type: String, required: true },
+    reporter: { type: String, required: true }
   },
   {
     timestamps: true,
