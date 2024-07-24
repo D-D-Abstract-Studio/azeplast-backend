@@ -1,10 +1,10 @@
 import type { RequestHandler } from 'express'
-import { deleteBoardService } from './service'
+import { deleteBoardService as deleteNotificationService } from './service'
 
 export const deleteNotificationController: RequestHandler = async (req, res) => {
-  await deleteBoardService({
+  await deleteNotificationService({
     id: req.params?.id
   })
 
-  return res.status(202).json({ message: 'Quadro deletado com sucesso' })
+  return res.status(202).json({ message: 'Notificação deletada com sucesso' })
 }

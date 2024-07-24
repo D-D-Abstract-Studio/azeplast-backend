@@ -1,23 +1,19 @@
 import { HTTPError } from '@/errors/httpError'
 
-import { KanbanBoard } from '@/models/KanbanBoard'
+import { Notifications } from '@/models/Notifications'
 
 import * as Z from 'zod'
 
-type DeleteUserService = {
-  id: string
-}
-
-const deleteDomainSchema = Z.object({
+const deleteNotificationSchema = Z.object({
   id: Z.string()
 })
 
-export const deleteBoardService = async (data: DeleteUserService) => {
-  const { id } = deleteDomainSchema.parse(data)
+export const deleteBoardService = async (data: { id: string }) => {
+  const { id } = deleteNotificationSchema.parse(data)
 
-  const boardExists = await KanbanBoard.findOne({ _id: id })
+  const notificationExists = await Notifications.findOne({ _id: id })
 
-  if (!boardExists) throw new HTTPError('Board not found', 404)
+  if (!notificationExists) throw new HTTPError('Notification not found', 404)
 
-  return KanbanBoard.deleteOne({ _id: id })
+  return Notifications.deleteOne({ _id: id })
 }
