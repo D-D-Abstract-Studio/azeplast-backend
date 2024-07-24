@@ -1,9 +1,9 @@
-import { getAllBoardsService } from './service'
+import { getAllNotificationsService } from './service'
 
 import type { RequestHandler } from 'express'
 
 export const getAllNotificationsController: RequestHandler = async (req, res) => {
-  const users = await getAllBoardsService()
+  const notifications = await getAllNotificationsService()
 
-  return res.status(201).json(users)
+  return res.status(201).json(notifications)
 }

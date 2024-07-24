@@ -1,34 +1,21 @@
 import { HTTPError } from '@/errors'
 
-import { NotificationSchema } from '../validations'
-import { KanbanBoard } from '@/models/KanbanBoard'
+import { type INotifications, NotificationSchema, Notifications } from '@/models/Notifications'
 
-import { IKanbanBoard } from '@/types/kanban'
+export const updateNotificationService = async (data: INotifications) => {
+  const { title, description, reporter, view, taskId, assignee, priority } = NotificationSchema.parse(data)
 
-export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
-  const { name, usersIds, columnIds, ordered } = NotificationSchema.parse(data)
+  const notification = await Notifications.findById(data.id)
 
-  const board = await KanbanBoard.findById(data.boardId)
-
-  if (!board) {
-    throw new HTTPError('Board not found', 404)
+  if (!notification) {
+    throw new HTTPError('Notification not found', 404)
   }
 
-  if (name) {
-    const existingBoard = await KanbanBoard.findOne({ name })
+  Object.assign(notification, { title, description, reporter, view, taskId, assignee, priority })
 
-    if (existingBoard && existingBoard.id !== data.boardId) {
-      throw new HTTPError('Board with this name already exists', 409)
-    }
-
-    board.name = name
-  }
-
-  Object.assign(board, { name, usersIds, columnIds, ordered })
-
-  await board.save().catch(error => {
-    throw new HTTPError('Failed to update board', 500)
+  await notification.save().catch(error => {
+    throw new HTTPError('Failed to update notification', 500)
   })
 
-  return board
+  return notification
 }

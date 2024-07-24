@@ -2,10 +2,10 @@ import { HTTPError } from '@/errors'
 
 import { KanbanBoard } from '@/models/KanbanBoard'
 
-export const getAllBoardsService = async () => {
-  const users = await KanbanBoard.find().catch(error => {
-    throw new HTTPError('Failed to fetch boards', 500)
+export const getAllNotificationsService = async () => {
+  const notifications = await KanbanBoard.find().catch(error => {
+    throw new HTTPError('Failed to get notifications', 500)
   })
 
-  return users
+  return notifications
 }
