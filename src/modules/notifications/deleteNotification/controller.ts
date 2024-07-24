@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express'
 import { deleteBoardService } from './service'
 
-export const deleteBoardController: RequestHandler = async (req, res) => {
+export const deleteNotificationController: RequestHandler = async (req, res) => {
   await deleteBoardService({
     id: req.params?.id
   })

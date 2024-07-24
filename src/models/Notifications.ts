@@ -7,7 +7,6 @@ import { type Document, Schema } from 'mongoose'
 export interface INotifications extends Partial<Document> {
   taskId: Schema.Types.ObjectId
   view: boolean
-  finished: boolean
   title: string
   description: string
   assignee: [{ name: string }]
@@ -19,7 +18,6 @@ const NotificationSchema = new Schema<INotifications>(
   {
     reporter: { type: String, required: true },
     view: { type: Boolean, required: true, default: false },
-    finished: { type: Boolean, required: true, default: false },
     title: { type: String, required: true },
     description: { type: String, required: true },
     priority: { type: String, required: true },

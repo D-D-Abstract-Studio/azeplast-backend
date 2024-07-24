@@ -2,19 +2,19 @@ import express, { Router } from 'express'
 
 import { endpoint } from '@/middlewares'
 
-import { updateBoardController } from './updateBoard/controller'
-import { getAllBoardsController } from './getAllBoards/controller'
-import { deleteBoardController } from './removeBoard/controller'
-import { createBoardController } from './createBoards/controller'
+import { updateBoardController } from './updateNotification/controller'
+import { getAllNotificationsController } from './getAllNotifications/controller'
+import { deleteNotificationController } from './deleteNotification/controller'
+import { createNotificationController } from './createNotification/controller'
 
 const router = Router()
 
-router.get('/', endpoint(getAllBoardsController))
+router.get('/', endpoint(getAllNotificationsController))
 
-router.post('/', endpoint(createBoardController))
+router.post('/', endpoint(createNotificationController))
 
 router.put('/:id', endpoint(updateBoardController))
 
-router.delete('/:id', endpoint(deleteBoardController))
+router.delete('/:id', endpoint(deleteNotificationController))
 
 export default router
