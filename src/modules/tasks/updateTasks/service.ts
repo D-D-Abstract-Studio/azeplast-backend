@@ -1,12 +1,17 @@
 import { HTTPError } from '@/errors'
 
 import { IKanbanTask, KanbanTask, TaskSchema } from '@/models/KanbanTask'
+import { User } from '@/models/User'
 
-export const updateTaskService = async (data: IKanbanTask & { user: string }) => {
+export const updateTaskService = async (data: IKanbanTask & { userName: string }) => {
   const { name, archived, priority, categories, files, description, assignee, dueDate, reporter } =
     TaskSchema.parse(data)
 
   const task = await KanbanTask.findById(data.id)
+
+  const user = await User.findOne({ name: data.userName })
+
+  console.log(user)
 
   if (!task) {
     throw new HTTPError('Task not found', 404)
@@ -22,11 +27,10 @@ export const updateTaskService = async (data: IKanbanTask & { user: string }) =>
     assignee,
     dueDate,
     reporter,
-    history: [...(task.history || []), { user: data.user, date: new Date() }]
+    history: [...(task.history || []), { user, date: new Date() }]
   })
 
   await task.save().catch(error => {
-    console.log(error)
     throw new HTTPError('Failed to update task', 500)
   })
 

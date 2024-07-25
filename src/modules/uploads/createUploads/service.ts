@@ -11,7 +11,5 @@ export const createUploadsService = async ({ files }: { files: Express.Multer.Fi
     }
   })
 
-  console.log(newfiles)
-
   return newfiles
 }
