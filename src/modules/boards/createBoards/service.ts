@@ -1,16 +1,13 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanBoard } from '@/models/KanbanBoard'
-import { BoardSchema } from '../validations'
-
-import { IKanbanBoard } from '@/types/kanban'
+import { IKanbanBoard, KanbanBoard, BoardSchema } from '@/models/KanbanBoard'
 
 export const createBoardService = async (data: IKanbanBoard) => {
   const boardData = BoardSchema.parse(data)
 
   const board = new KanbanBoard(boardData)
 
-  const newBoard = await board.save().catch(error => {
+  const newBoard = await board.save().catch(() => {
     throw new HTTPError('Failed to create board', 500)
   })
 

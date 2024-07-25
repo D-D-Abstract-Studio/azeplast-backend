@@ -1,14 +1,11 @@
 import { HTTPError } from '@/errors'
 
-import { BoardSchema } from '../validations'
-import { KanbanBoard } from '@/models/KanbanBoard'
+import { IKanbanBoard, KanbanBoard, BoardSchema } from '@/models/KanbanBoard'
 
-import { IKanbanBoard } from '@/types/kanban'
-
-export const updateBoardService = async (data: IKanbanBoard & { boardId: string }) => {
+export const updateBoardService = async (data: IKanbanBoard) => {
   const { name, usersIds, columnIds, ordered } = BoardSchema.parse(data)
 
-  const board = await KanbanBoard.findById(data.boardId)
+  const board = await KanbanBoard.findById(data.id)
 
   if (!board) {
     throw new HTTPError('Board not found', 404)
@@ -17,7 +14,7 @@ export const updateBoardService = async (data: IKanbanBoard & { boardId: string 
   if (name) {
     const existingBoard = await KanbanBoard.findOne({ name })
 
-    if (existingBoard && existingBoard.id !== data.boardId) {
+    if (existingBoard && existingBoard.id !== data.id) {
       throw new HTTPError('Board with this name already exists', 409)
     }
 

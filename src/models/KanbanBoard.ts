@@ -1,18 +1,27 @@
-import { Schema, Document } from 'mongoose'
+import { Schema } from 'mongoose'
+import { z } from 'zod'
 
 import { azePlastDB } from '@/shared/connection-db'
-import { setDefaultSettingsSchema } from '@/shared'
 
+import { setDefaultSettingsSchema } from '@/shared'
 import { collectionsData } from '@/config'
 
-import type { IKanbanBoard } from '@/types/kanban'
+export const BoardSchema = z.object({
+  name: z.string(),
+  ordered: z.array(z.string()),
+  usersIds: z.array(z.string()),
+  columnIds: z.array(z.string())
+})
 
-type IKanbanBoardDocument = IKanbanBoard & Document
+export type IKanbanBoard = Omit<DocumentSchemaZod<typeof BoardSchema>, 'columnIds' | 'usersIds'> & {
+  columnIds: Array<Schema.Types.ObjectId>
+  usersIds: Array<Schema.Types.ObjectId>
+}
 
-const BoardSchema = new Schema<IKanbanBoardDocument>(
+const SchemaModel = new Schema<IKanbanBoard>(
   {
-    columnIds: { type: [String], ref: collectionsData.KanbanColumn.name, required: true },
-    usersIds: { type: [String], ref: collectionsData.User.name, required: true },
+    columnIds: { type: [{ type: Schema.Types.ObjectId, ref: collectionsData.KanbanColumn.name }], required: true },
+    usersIds: { type: [{ type: Schema.Types.ObjectId, ref: collectionsData.User.name }], required: true },
     ordered: { type: [String], required: true },
     name: { type: String, required: true }
   },
@@ -22,6 +31,6 @@ const BoardSchema = new Schema<IKanbanBoardDocument>(
   }
 )
 
-setDefaultSettingsSchema(BoardSchema)
+setDefaultSettingsSchema(SchemaModel)
 
-export const KanbanBoard = azePlastDB.model<IKanbanBoardDocument>(collectionsData.KanbanBoard.name, BoardSchema)
+export const KanbanBoard = azePlastDB.model<IKanbanBoard>(collectionsData.KanbanBoard.name, SchemaModel)
