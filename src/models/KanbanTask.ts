@@ -5,10 +5,39 @@ import { setDefaultSettingsSchema } from '@/shared'
 
 import { collectionsData } from '@/config'
 
-import type { IKanbanTask } from '@/types/kanban'
-import type { Document } from 'mongoose'
+import { z } from 'zod'
 
-type IKanbanTaskDocument = IKanbanTask & Document
+export const TaskSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  archived: z.boolean(),
+  files: z
+    .array(
+      z.object({
+        fieldname: z.string(),
+        originalname: z.string(),
+        encoding: z.string(),
+        mimetype: z.string(),
+        destination: z.string(),
+        filename: z.string(),
+        path: z.string(),
+        size: z.number(),
+        name: z.string(),
+        type: z.string(),
+        preview: z.string()
+      })
+    )
+    .optional(),
+  priority: z.string(),
+  categories: z.array(z.string()),
+  description: z.string().min(1, 'Description is required'),
+  assignee: z.array(z.object({ name: z.string().optional() })),
+  dueDate: z.string().min(1, 'Due date is required'),
+  reporter: z.string().min(1, 'Reporter is required')
+})
+
+export type IKanbanTask = Omit<DocumentSchemaZod<typeof TaskSchema>, 'taskId'> & {
+  history: { user: string; date: Date }[]
+}
 
 const fileSchema = new Schema({
   fieldname: { type: String, required: true },
@@ -24,7 +53,7 @@ const fileSchema = new Schema({
   preview: { type: String, required: true }
 })
 
-const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
+const SchemaModel = new Schema<IKanbanTask>(
   {
     name: { type: String, required: true },
     files: { type: [fileSchema] },
@@ -43,6 +72,6 @@ const KanbanTaskSchema = new Schema<IKanbanTaskDocument>(
   }
 )
 
-setDefaultSettingsSchema(KanbanTaskSchema)
+setDefaultSettingsSchema(SchemaModel)
 
-export const KanbanTask = azePlastDB.model<IKanbanTaskDocument>(collectionsData.KanbanTask.name, KanbanTaskSchema)
+export const KanbanTask = azePlastDB.model<IKanbanTask>(collectionsData.KanbanTask.name, SchemaModel)

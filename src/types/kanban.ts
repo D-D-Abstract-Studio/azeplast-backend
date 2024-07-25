@@ -16,24 +16,6 @@ type File = {
   preview: string
 }
 
-export type IKanbanTask = {
-  name: string
-  archived: boolean
-  history?: Array<{
-    user: String
-    date: Date
-  }>
-  files: Array<File>
-  priority: string
-  categories?: string[]
-  description: string
-  assignee: Array<{
-    name?: string
-  }>
-  dueDate: string
-  reporter: string
-}
-
 export type IKanbanColumn = {
   boardId: Types.ObjectId
   taskIds: Array<Types.ObjectId>

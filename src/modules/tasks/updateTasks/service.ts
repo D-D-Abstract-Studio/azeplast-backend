@@ -1,11 +1,8 @@
 import { HTTPError } from '@/errors'
 
-import { KanbanTask } from '@/models/KanbanTask'
-import { TaskSchema } from '../validations'
+import { IKanbanTask, KanbanTask, TaskSchema } from '@/models/KanbanTask'
 
-import { IKanbanTask } from '@/types/kanban'
-
-export const updateTaskService = async (data: IKanbanTask & { id: string; user: string }) => {
+export const updateTaskService = async (data: IKanbanTask & { user: string }) => {
   const { name, archived, priority, categories, files, description, assignee, dueDate, reporter } =
     TaskSchema.parse(data)
 
