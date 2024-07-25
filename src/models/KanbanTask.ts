@@ -30,13 +30,13 @@ export const TaskSchema = z.object({
   priority: z.string(),
   categories: z.array(z.string()),
   description: z.string().min(1, 'Description is required'),
-  assignee: z.array(z.object({ name: z.string().optional() })),
+  assignee: z.array(z.object({ userId: z.string().optional() })),
   dueDate: z.string().min(1, 'Due date is required'),
   reporter: z.string().min(1, 'Reporter is required')
 })
 
 export type IKanbanTask = Omit<DocumentSchemaZod<typeof TaskSchema>, 'taskId'> & {
-  history: { user: string; date: Date }[]
+  history: [{ userId: Schema.Types.ObjectId; date: Date }]
 }
 
 const fileSchema = new Schema({
@@ -57,11 +57,11 @@ const SchemaModel = new Schema<IKanbanTask>(
   {
     name: { type: String, required: true },
     files: { type: [fileSchema] },
-    history: { type: [{ user: String, date: Date }] },
+    history: { type: [{ userId: Schema.Types.ObjectId, date: Date }], ref: collectionsData.User.name },
     priority: { type: String, required: true },
     categories: { type: [String], required: true },
     archived: { type: Boolean, required: true, default: false },
-    assignee: [{ name: { type: String, required: true } }],
+    assignee: { type: [{ userId: Schema.Types.ObjectId, date: Date }], ref: collectionsData.User.name },
     description: { type: String, required: true },
     dueDate: { type: String, required: true },
     reporter: { type: String, required: true }

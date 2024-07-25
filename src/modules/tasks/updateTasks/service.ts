@@ -11,8 +11,6 @@ export const updateTaskService = async (data: IKanbanTask & { userName: string }
 
   const user = await User.findOne({ name: data.userName })
 
-  console.log(user)
-
   if (!task) {
     throw new HTTPError('Task not found', 404)
   }
@@ -27,7 +25,7 @@ export const updateTaskService = async (data: IKanbanTask & { userName: string }
     assignee,
     dueDate,
     reporter,
-    history: [...(task.history || []), { user, date: new Date() }]
+    history: [...task.history, ...[{ userId: user?._id, date: new Date() }]]
   })
 
   await task.save().catch(error => {
