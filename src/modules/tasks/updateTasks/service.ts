@@ -4,8 +4,7 @@ import { IKanbanTask, KanbanTask, TaskSchema } from '@/models/KanbanTask'
 import { User } from '@/models/User'
 
 export const updateTaskService = async (data: IKanbanTask & { userName: string }) => {
-  const { name, archived, priority, categories, files, description, assignee, dueDate, reporter } =
-    TaskSchema.parse(data)
+  const { name, archived, priority, categories, files, description, assignee, dueDate, userId } = TaskSchema.parse(data)
 
   const task = await KanbanTask.findById(data.id)
 
@@ -16,6 +15,7 @@ export const updateTaskService = async (data: IKanbanTask & { userName: string }
   }
 
   Object.assign(task, {
+    userId,
     name,
     files,
     archived,
@@ -24,11 +24,10 @@ export const updateTaskService = async (data: IKanbanTask & { userName: string }
     description,
     assignee,
     dueDate,
-    reporter,
     history: [...task.history, ...[{ userId: user?._id, date: new Date() }]]
   })
 
-  await task.save().catch(error => {
+  await task.save().catch(() => {
     throw new HTTPError('Failed to update task', 500)
   })
 
