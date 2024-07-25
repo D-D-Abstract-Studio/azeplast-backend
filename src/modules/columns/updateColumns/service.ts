@@ -1,11 +1,8 @@
 import { HTTPError } from '@/errors'
 
-import { ColumnSchema } from '../validations'
+import { IKanbanColumn, KanbanColumn, ColumnSchema } from '@/models/KanbanColumn'
 
-import { KanbanColumn } from '@/models/KanbanColumn'
-import { IKanbanColumn } from '@/types/kanban'
-
-export const updateBoardService = async (data: IKanbanColumn & { id: string }) => {
+export const updateBoardService = async (data: IKanbanColumn) => {
   const { name, boardId, archived, taskIds } = ColumnSchema.parse(data)
 
   const column = await KanbanColumn.findById(data.id)

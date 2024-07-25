@@ -1,16 +1,24 @@
-import { Schema } from 'mongoose'
-
 import { azePlastDB } from '@/shared/connection-db'
 import { setDefaultSettingsSchema } from '@/shared'
 
 import { collectionsData } from '@/config'
 
-import type { Document } from 'mongoose'
-import type { IKanbanColumn } from '@/types/kanban'
+import { Schema } from 'mongoose'
+import { z } from 'zod'
 
-type IKanbanColumnDocument = IKanbanColumn & Document
+export const ColumnSchema = z.object({
+  name: z.string(),
+  boardId: z.string(),
+  archived: z.boolean(),
+  taskIds: z.array(z.string())
+})
 
-const ColumnSchema = new Schema<IKanbanColumnDocument>(
+export type IKanbanColumn = Omit<DocumentSchemaZod<typeof ColumnSchema>, 'boardId' | 'taskIds'> & {
+  boardId: Schema.Types.ObjectId
+  taskIds: Array<Schema.Types.ObjectId>
+}
+
+const SchemaModel = new Schema<IKanbanColumn>(
   {
     name: { type: String, required: true },
     boardId: { type: Schema.Types.ObjectId, ref: collectionsData.KanbanBoard.name, required: true },
@@ -23,6 +31,6 @@ const ColumnSchema = new Schema<IKanbanColumnDocument>(
   }
 )
 
-setDefaultSettingsSchema(ColumnSchema)
+setDefaultSettingsSchema(SchemaModel)
 
-export const KanbanColumn = azePlastDB.model<IKanbanColumnDocument>(collectionsData.KanbanColumn.name, ColumnSchema)
+export const KanbanColumn = azePlastDB.model<IKanbanColumn>(collectionsData.KanbanColumn.name, SchemaModel)

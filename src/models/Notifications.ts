@@ -1,8 +1,8 @@
 import { collectionsData } from '@/config'
 import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
 
+import { Schema } from 'mongoose'
 import { z } from 'zod'
-import { Schema as SchemaMongoose } from 'mongoose'
 
 export const NotificationSchema = z.object({
   title: z.string(),
@@ -10,23 +10,24 @@ export const NotificationSchema = z.object({
   reporter: z.string(),
   view: z.boolean(),
   taskId: z.string(),
-  assignee: z.array(z.object({ name: z.string() })),
+  assignee: z.array(z.object({ userId: z.string() })),
   priority: z.string()
 })
 
-export type INotifications = Omit<DocumentSchemaZod<typeof NotificationSchema>, 'taskId'> & {
-  taskId: SchemaMongoose.Types.ObjectId
+export type INotifications = Omit<DocumentSchemaZod<typeof NotificationSchema>, 'taskId' | 'reporter'> & {
+  taskId: Schema.Types.ObjectId
+  reporter: Schema.Types.ObjectId
 }
 
-const SchemaModel = new SchemaMongoose<INotifications>(
+const SchemaModel = new Schema<INotifications>(
   {
-    reporter: { type: String, required: true },
-    view: { type: Boolean, required: true, default: false },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    priority: { type: String, required: true },
-    assignee: [{ name: { type: String, required: true } }],
-    taskId: { type: SchemaMongoose.Types.ObjectId, ref: collectionsData.KanbanTask.name }
+    reporter: { type: Schema.Types.ObjectId, ref: collectionsData.User.name, required: true },
+    view: { type: Boolean, required: true, default: false },
+    taskId: { type: Schema.Types.ObjectId, ref: collectionsData.KanbanTask.name },
+    assignee: { type: [{ userId: Schema.Types.ObjectId, date: Date }], ref: collectionsData.User.name },
+    priority: { type: String, required: true }
   },
   {
     timestamps: true,
