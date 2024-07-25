@@ -1,8 +1,6 @@
 import { HTTPError } from '@/errors'
 
-import { IUser, User } from '@/models/User'
-
-import { UserSchema } from '../validations'
+import { IUser, User, UserSchema } from '@/models/User'
 
 export const createUserService = async (data: IUser) => {
   const { name, permissions } = UserSchema.parse(data)
@@ -13,7 +11,7 @@ export const createUserService = async (data: IUser) => {
 
   const user = new User({ name, permissions })
 
-  await user.save().catch(error => {
+  await user.save().catch(() => {
     throw new HTTPError('Failed to create board', 500)
   })
 }

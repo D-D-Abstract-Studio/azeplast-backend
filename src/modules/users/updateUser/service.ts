@@ -1,8 +1,6 @@
 import { HTTPError } from '@/errors'
 
-import { IUser, User } from '@/models/User'
-
-import { UserSchema } from '../validations'
+import { IUser, User, UserSchema } from '@/models/User'
 
 export const updateUserService = async (data: IUser & { userId: string }) => {
   const { name, permissions } = UserSchema.parse(data)
@@ -27,7 +25,7 @@ export const updateUserService = async (data: IUser & { userId: string }) => {
     user.permissions = permissions
   }
 
-  await user.save().catch(error => {
+  await user.save().catch(() => {
     throw new HTTPError('Failed to update user', 500)
   })
 

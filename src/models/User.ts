@@ -1,16 +1,19 @@
-import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
+import { Schema } from 'mongoose'
+import { z } from 'zod'
 
+import { azePlastDB, setDefaultSettingsSchema } from '@/shared'
 import { collectionsData } from '@/config'
 
-import { type Document, Schema } from 'mongoose'
+const userPermissions = ['user', 'admin'] as const
 
-export const userPermissions = ['user', 'admin'] as const
-export interface IUser extends Partial<Document> {
-  name: string
-  permissions: 'user' | 'admin'
-}
+export const UserSchema = z.object({
+  name: z.string(),
+  permissions: z.enum(userPermissions)
+})
 
-const UserSchema = new Schema<IUser>(
+export type IUser = DocumentSchemaZod<typeof UserSchema>
+
+const SchemaModel = new Schema<IUser>(
   {
     name: { type: String, required: true },
     permissions: { type: String, enum: userPermissions, default: 'user' }
@@ -21,6 +24,6 @@ const UserSchema = new Schema<IUser>(
   }
 )
 
-setDefaultSettingsSchema(UserSchema)
+setDefaultSettingsSchema(SchemaModel)
 
-export const User = azePlastDB.model<IUser>(collectionsData.User.name, UserSchema)
+export const User = azePlastDB.model<IUser>(collectionsData.User.name, SchemaModel)
