@@ -17,7 +17,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
-app.use(cors())
+
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+)
+
 app.options('*', cors())
 app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
 
