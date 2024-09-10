@@ -1,8 +1,8 @@
 import { createConnection } from 'mongoose'
 
-import { dbMongo } from '../config'
+import { MONGO_URL } from '../config'
 
-export const azePlastDB = createConnection(dbMongo.dbUrl, {
+export const azePlastDB = createConnection(MONGO_URL, {
   maxPoolSize: 10
 })
 

@@ -31,9 +31,7 @@
     "zod": "^3.23.6"
   },
   "scripts": {
-    "dev": "bun run --watch ./src/index.ts",
-    "dev:run": "node --inspect -r ./dist/dev.js --watch dist/src",
-    "build": "./scripts/build",
-    "start": "node build/index.js"
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts"
   }
 }
