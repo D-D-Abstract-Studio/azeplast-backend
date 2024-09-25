@@ -12,6 +12,6 @@ export const createUserService = async (data: IUser) => {
   const user = new User({ name, permissions })
 
   await user.save().catch(() => {
-    throw new HTTPError('Failed to create board', 500)
+    throw new HTTPError('Failed to create user', 500)
   })
 }
