@@ -4,7 +4,7 @@ import { IKanbanTask, KanbanTask, TaskSchema } from '@/models/KanbanTask'
 import { User } from '@/models/User'
 
 export const updateTaskService = async (data: IKanbanTask & { userName: string }) => {
-  const { name, archived, priority, categories, description, assignee, dueDate, userId } = TaskSchema.parse(data)
+  const { name, archived, priority, categories, conversations, assignee, dueDate, userId } = TaskSchema.parse(data)
 
   const task = await KanbanTask.findById(data.id)
 
@@ -20,7 +20,7 @@ export const updateTaskService = async (data: IKanbanTask & { userName: string }
     archived,
     priority,
     categories,
-    description,
+    conversations,
     assignee,
     dueDate,
     history: [...task.history, ...[{ userId: user?._id, date: new Date() }]]

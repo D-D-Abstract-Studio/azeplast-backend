@@ -12,7 +12,7 @@ export const TaskSchema = z.object({
   archived: z.boolean(),
   priority: z.string(),
   categories: z.array(z.string()),
-  description: z.string().min(1, 'Description is required'),
+  conversations: z.array(z.object({ userId: z.string(), message: z.string() })).optional(),
   assignee: z.array(z.object({ userId: z.string().optional() })),
   dueDate: z.string().min(1, 'Due date is required'),
   userId: z.string().min(1, 'Reporter is required')
@@ -31,7 +31,7 @@ const SchemaModel = new Schema<IKanbanTask>(
     categories: { type: [String], required: true },
     archived: { type: Boolean, required: true, default: false },
     assignee: { type: [{ userId: Schema.Types.ObjectId, date: Date }], ref: collectionsData.User.name },
-    description: { type: String, required: true },
+    conversations: { type: [{ userId: Schema.Types.ObjectId, message: String }], ref: collectionsData.User.name },
     dueDate: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: collectionsData.User.name, required: true }
   },
